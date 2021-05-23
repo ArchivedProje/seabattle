@@ -29,12 +29,12 @@ private:
 
     std::string get_status(const size_t x, const size_t y) const;
 
-    size_t get_distance(size_t x, size_t y, const char coordinate, const std::string& direction, bool check_current = true) const;
+    std::pair<size_t, bool> get_distance(size_t x, size_t y, const char coordinate, const std::string& direction, bool check_current = true) const;
 
 public:
     explicit Printing(std::ostream &new_stream);
 
-    void shot(char x, size_t y);
+    void shot(size_t x, size_t y);
 
     void dead(size_t x, size_t y);
 

@@ -65,12 +65,14 @@ std::string Printing::get_status(const size_t x, const size_t y) const {
     return "unknown";
 }
 
-size_t Printing::get_distance(size_t x, size_t y, const char coordinate, const std::string &direction, bool check_current) const {
+std::pair<size_t, bool>  Printing::get_distance(size_t x, size_t y, const char coordinate, const std::string &direction, bool check_current) const {
     size_t distance = 0;
+    bool end = false;
     if (check_current) {
         if (get_status(x, y) != "empty") {
-            return distance;
+            return {distance, end};
         }
+        ++distance;
     }
     if (coordinate == 'x') {
         if (direction == "right") {
@@ -115,13 +117,14 @@ size_t Printing::get_distance(size_t x, size_t y, const char coordinate, const s
             }
         }
     }
-    return distance;
+    if (x == 9 || y == 9 || x == 0 || y == 0) {
+        end = true;
+    }
+    return {distance, end};
 }
 
-void Printing::shot(char x, size_t y) {
+void Printing::shot(size_t x, size_t y) {
     try {
-        x -= 65;
-        --y;
         if (map_status.at({x, y}) == symbols["ship"]) {
             map_status.at({x, y}) = symbols["hit"];
             dead(x, y);

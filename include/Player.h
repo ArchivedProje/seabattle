@@ -11,7 +11,7 @@
 class Player {
     Controller controller;
 
-    void get_cell(char &x, size_t &y);
+    void set_ships();
 
 public:
     Player(Printing &new_own_field, Printing &new_opponnent_field);

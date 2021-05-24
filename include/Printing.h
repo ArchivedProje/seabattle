@@ -34,7 +34,7 @@ private:
 public:
     explicit Printing(std::ostream &new_stream);
 
-    void shot(size_t x, size_t y);
+    bool shot(size_t x, size_t y);
 
     void dead(size_t x, size_t y);
 

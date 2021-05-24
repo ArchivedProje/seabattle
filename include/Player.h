@@ -16,7 +16,7 @@ class Player {
 public:
     Player(Printing &new_own_field, Printing &new_opponnent_field);
 
-    void make_shot();
+    std::pair<std::pair<size_t, size_t>, bool> make_shot();
 };
 
 #endif //SEABATTLE_PLAYER_H

@@ -7,7 +7,7 @@
 #include <map>
 #include <set>
 
-static std::map<std::set<std::pair<size_t, size_t>>, size_t> ships;
+static std::map<std::set<std::pair<size_t, size_t>>, size_t> ships; //player's ships
 
 void add_ships(std::set<std::pair<size_t, size_t>> &coordinates, size_t size);
 

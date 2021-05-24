@@ -8,13 +8,16 @@ Player::Player(Printing &new_own_field, Printing &new_opponnent_field) : control
     set_ships();
 }
 
-void Player::make_shot() {
-    controller.make_shot();
+std::pair<std::pair<size_t, size_t>, bool> Player::make_shot() {
+    size_t x;
+    size_t y;
+    controller.get_cell(x, y);
+    return {{x, y}, controller.make_shot(x, y)};
 }
 
 void Player::set_ships() {
     std::cout << "Hi, now you should set your ships" << std::endl;
-    for (size_t i = 2; i < 5; ++i) {
+    for (size_t i = 1; i < 5; ++i) {
         size_t k = 0;
         while (k < 5 - i) {
             controller.show_own_field();

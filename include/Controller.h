@@ -22,10 +22,11 @@ public:
 
     bool set_ship(size_t x, size_t y, size_t ship_size, std::string& direction);
 
-    void make_shot();
+    bool make_shot(size_t x, size_t y);
 
     void show_own_field();
 
+    std::string get_status(size_t x, size_t y);
 };
 
 #endif //SEABATTLE_CONTROLLER_H

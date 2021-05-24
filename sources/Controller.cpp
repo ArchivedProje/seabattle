@@ -28,6 +28,7 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(j, y, "ship");
                     coordinates.insert(std::make_pair(j, y));
                 }
+                add_ships(coordinates, ship_size);
                 return true;
             }
         }
@@ -43,6 +44,7 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(j, y, "ship");
                     coordinates.insert(std::make_pair(j, y));
                 }
+                add_ships(coordinates, ship_size);
                 return true;
             }
         }
@@ -58,6 +60,7 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(x, j, "ship");
                     coordinates.insert(std::make_pair(x, j));
                 }
+                add_ships(coordinates, ship_size);
                 return true;
             }
         }
@@ -73,6 +76,7 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(x, j, "ship");
                     coordinates.insert(std::make_pair(x, j));
                 }
+                add_ships(coordinates, ship_size);
                 return true;
             }
         }
@@ -130,15 +134,16 @@ bool Controller::get_cell(size_t &x, size_t &y) {
     return true;
 }
 
-void Controller::make_shot() {
-    size_t x;
-    size_t y;
-    get_cell(x, y);
-    opponnent_field.shot(x, y);
+bool Controller::make_shot(size_t x, size_t y) {
+    return opponnent_field.shot(x, y);
 }
 
 void Controller::show_own_field() {
     own_field.show(true);
+}
+
+std::string Controller::get_status(size_t x, size_t y) {
+    return opponnent_field.get_status(x, y);
 }
 
 

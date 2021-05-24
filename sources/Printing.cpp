@@ -123,22 +123,24 @@ std::pair<size_t, bool>  Printing::get_distance(size_t x, size_t y, const char c
     return {distance, end};
 }
 
-void Printing::shot(size_t x, size_t y) {
+bool Printing::shot(size_t x, size_t y) {
     try {
         if (map_status.at({x, y}) == symbols["ship"]) {
             map_status.at({x, y}) = symbols["hit"];
             dead(x, y);
             update_map();
+            return true;
         } else if (map_status.at({x, y}) == symbols["empty"]) {
             map_status.at({x, y}) = symbols["miss"];
             update_map();
         } else {
             std::cout << "You have already shot here" << std::endl;
         }
-
     } catch (std::out_of_range&) {
         std::cout << "Wrong input" << std::endl;
+        return false;
     }
+    return false;
 }
 
 void Printing::dead(size_t x, size_t y) {

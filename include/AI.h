@@ -15,11 +15,13 @@
 class AI {
 private:
     Controller controller;
-
+    std::set<std::pair<size_t, size_t>> shots;
     void set_ships();
 
 public:
     AI(Printing &new_own_field, Printing &new_opponnent_field);
+
+    std::pair<std::pair<size_t, size_t>, bool> make_shot();
 };
 
 #endif //SEABATTLE_AI_H

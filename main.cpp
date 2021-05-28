@@ -2,6 +2,7 @@
 #include "AI.h"
 #include "Player.h"
 #include <iostream>
+#include <windows.h>
 
 void draw(Printing &player_field, Printing &computer_field) {
     std::cout << "Your field:" << std::endl;

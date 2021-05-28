@@ -8,7 +8,7 @@ void draw(Printing &player_field, Printing &computer_field) {
     std::cout << "Your field:" << std::endl;
     player_field.show(true);
     std::cout << "Computer's field:" << std::endl;
-    computer_field.show(true);
+    computer_field.show();
 }
 
 int main() {

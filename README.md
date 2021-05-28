@@ -1,4 +1,4 @@
-###How to arrange ships?
+### How to arrange ships?
 - You can choose automatic mode, then the program will arrange the ships by itsel. To select this option enter **_auto_**
 
 ![](img/auto_arrange.png)
@@ -19,3 +19,10 @@ There are 4 directions:
 For example, if you want a two-deck ship to stand in G2 and H2, you need to enter the following command
 
 ![](img/choose_direction.png)
+
+### Designations
+- Ship - s
+- Hit - x
+- Miss - *
+- Empty cell - _
+

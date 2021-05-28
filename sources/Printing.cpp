@@ -21,9 +21,9 @@ void Printing::cls() {
 
 void Printing::show(bool with_ships) const {
     if (with_ships) {
-    stream << map.str();
+        stream << map.str();
     } else {
-        for (auto& symbol : map.str()) {
+        for (auto &symbol : map.str()) {
             if (symbol == 's') {
                 symbol = '_';
             }
@@ -59,13 +59,14 @@ std::string Printing::get_status(const size_t x, const size_t y) const {
                 return item.first;
             }
         }
-    } catch (std::out_of_range& ) {
+    } catch (std::out_of_range &) {
         std::cerr << x << ' ' << y << " Out" << std::endl;
     }
     return "unknown";
 }
 
-std::pair<size_t, bool>  Printing::get_distance(size_t x, size_t y, const char coordinate, const std::string &direction, bool check_current) const {
+std::pair<size_t, bool> Printing::get_distance(size_t x, size_t y, const char coordinate, const std::string &direction,
+                                               bool check_current) const {
     size_t distance = 0;
     bool end = false;
     if (check_current) {
@@ -123,36 +124,38 @@ std::pair<size_t, bool>  Printing::get_distance(size_t x, size_t y, const char c
     return {distance, end};
 }
 
-bool Printing::shot(size_t x, size_t y) {
+std::pair<int, bool> Printing::shot(size_t x, size_t y, std::string &&who) { // hit dead
     try {
         if (map_status.at({x, y}) == symbols["ship"]) {
             map_status.at({x, y}) = symbols["hit"];
-            dead(x, y);
+            bool killed = dead(x, y, std::move(who));
             update_map();
-            return true;
+            return {1, killed};
         } else if (map_status.at({x, y}) == symbols["empty"]) {
             map_status.at({x, y}) = symbols["miss"];
             update_map();
+            return {0, false};
         } else {
             std::cout << "You have already shot here" << std::endl;
+            return {-1, false};
         }
-    } catch (std::out_of_range&) {
+    } catch (std::out_of_range &) {
         std::cout << "Wrong input" << std::endl;
-        return false;
+        return {-1, false};
     }
-    return false;
 }
 
-void Printing::dead(size_t x, size_t y) {
-    auto ships = get_ships();
-    for (auto& item : ships) {
-        if (item.first.contains({x, y})) {
-            --item.second;
-            if (item.second == 0) {
-                for (auto& coordinates : item.first) {
+bool Printing::dead(size_t x, size_t y, std::string &&who) {
+    auto ships = data::get_ships();
+    bool status = false;
+    for (auto &item : ships) {
+        if (item.first.contains({x, y}) && item.second.second != who) {
+            --item.second.first;
+            if (item.second.first == 0) {
+                for (auto &coordinates : item.first) {
+                    size_t new_x = coordinates.first;
+                    size_t new_y = coordinates.second;
                     for (int i = -1; i < 2; ++i) {
-                        size_t new_x = coordinates.first;
-                        size_t new_y = coordinates.second;
                         if (static_cast<int>(new_x + i) < 10 && static_cast<int>(new_x + i) > -1) {
                             new_x += i;
                         } else {
@@ -179,8 +182,11 @@ void Printing::dead(size_t x, size_t y) {
                     }
                 }
                 ships.erase(item.first);
+
+                status = true;
             }
         }
     }
-    set_ships(ships);
+    data::set_ships(ships);
+    return status;
 }

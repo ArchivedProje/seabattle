@@ -6,9 +6,10 @@
 
 
 Controller::Controller(Printing &new_own_field, Printing &new_opponnent_field) : own_field(new_own_field),
-                                                                                opponnent_field(new_opponnent_field) {}
+                                                                                 opponnent_field(new_opponnent_field),
+                                                                                 count_kills(0) {}
 
-bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& direction) {
+bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string &direction, std::string &&which) {
     if (is_correct_place(x, y)) {
         std::pair<size_t, bool> x_left = own_field.get_distance(x, y, 'x', "left");
         std::pair<size_t, bool> x_right = own_field.get_distance(x, y, 'x', "right");
@@ -16,7 +17,8 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
         std::pair<size_t, bool> y_down = own_field.get_distance(x, y, 'y', "down");
         std::set<std::pair<size_t, size_t>> coordinates;
         bool empty = true;
-        if ((direction == "nothing" || direction == "right") && (x_right.first > ship_size || (x_right.second && x_right.first >= ship_size))) {
+        if ((direction == "nothing" || direction == "right") &&
+            (x_right.first > ship_size || (x_right.second && x_right.first >= ship_size))) {
             for (size_t j = x; j < x + ship_size; ++j) {
                 empty = empty && is_correct_place(j, y);
                 if (!empty) {
@@ -28,11 +30,12 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(j, y, "ship");
                     coordinates.insert(std::make_pair(j, y));
                 }
-                add_ships(coordinates, ship_size);
+                data::add_ships(coordinates, {ship_size, which});
                 return true;
             }
         }
-        if ((direction == "nothing" || direction == "left") && (x_left.first > ship_size || (x_left.second && x_left.first >= ship_size))) {
+        if ((direction == "nothing" || direction == "left") &&
+            (x_left.first > ship_size || (x_left.second && x_left.first >= ship_size))) {
             for (size_t j = x, k = 0; k < ship_size; --j, ++k) {
                 empty = empty && is_correct_place(j, y);
                 if (!empty) {
@@ -44,11 +47,12 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(j, y, "ship");
                     coordinates.insert(std::make_pair(j, y));
                 }
-                add_ships(coordinates, ship_size);
+                data::add_ships(coordinates, {ship_size, which});
                 return true;
             }
         }
-        if ((direction == "nothing" || direction == "down") && (y_up.first > ship_size || (y_up.second && y_up.first >= ship_size))) {
+        if ((direction == "nothing" || direction == "down") &&
+            (y_up.first > ship_size || (y_up.second && y_up.first >= ship_size))) {
             for (size_t j = y; j < y + ship_size; ++j) {
                 empty = empty && is_correct_place(x, j);
                 if (!empty) {
@@ -60,11 +64,12 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(x, j, "ship");
                     coordinates.insert(std::make_pair(x, j));
                 }
-                add_ships(coordinates, ship_size);
+                data::add_ships(coordinates, {ship_size, which});
                 return true;
             }
         }
-        if ((direction == "nothing" || direction == "up") && (y_down.first > ship_size || (y_down.second && y_down.first >= ship_size))) {
+        if ((direction == "nothing" || direction == "up") &&
+            (y_down.first > ship_size || (y_down.second && y_down.first >= ship_size))) {
             for (size_t j = y, k = 0; k < ship_size; --j, ++k) {
                 empty = empty && is_correct_place(x, j);
                 if (!empty) {
@@ -76,7 +81,7 @@ bool Controller::set_ship(size_t x, size_t y, size_t ship_size, std::string& dir
                     own_field.set_status(x, j, "ship");
                     coordinates.insert(std::make_pair(x, j));
                 }
-                add_ships(coordinates, ship_size);
+                data::add_ships(coordinates, {ship_size, which});
                 return true;
             }
         }
@@ -134,8 +139,8 @@ bool Controller::get_cell(size_t &x, size_t &y) {
     return true;
 }
 
-bool Controller::make_shot(size_t x, size_t y) {
-    return opponnent_field.shot(x, y);
+std::pair<bool, bool> Controller::make_shot(size_t x, size_t y, std::string &&who) {
+    return opponnent_field.shot(x, y, std::move(who));
 }
 
 void Controller::show_own_field() {
@@ -145,5 +150,14 @@ void Controller::show_own_field() {
 std::string Controller::get_status(size_t x, size_t y) {
     return opponnent_field.get_status(x, y);
 }
+
+void Controller::increase_kills() {
+    ++count_kills;
+}
+
+size_t Controller::get_kills() {
+    return count_kills;
+}
+
 
 

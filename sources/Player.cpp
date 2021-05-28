@@ -4,15 +4,20 @@
 
 #include "Player.h"
 
-Player::Player(Printing &new_own_field, Printing &new_opponnent_field) : controller(new_own_field, new_opponnent_field) {
+Player::Player(Printing &new_own_field, Printing &new_opponnent_field) : controller(new_own_field,
+                                                                                    new_opponnent_field) {
     set_ships();
 }
 
-std::pair<std::pair<size_t, size_t>, bool> Player::make_shot() {
+std::pair<std::pair<size_t, size_t>, std::pair<bool, bool>> Player::make_shot() {
     size_t x;
     size_t y;
     controller.get_cell(x, y);
-    return {{x, y}, controller.make_shot(x, y)};
+    std::pair<bool, bool> shot = controller.make_shot(x, y, "player");
+    if (shot.second) {
+        controller.increase_kills();
+    }
+    return {{x, y}, shot};
 }
 
 void Player::set_ships() {
@@ -34,7 +39,7 @@ void Player::set_ships() {
                         std::cin >> direction;
                     }
                 }
-                if (controller.set_ship(x, y, i, direction)) {
+                if (controller.set_ship(x, y, i, direction, "player")) {
                     ++k;
                 } else {
                     std::cout << "Wrong input" << std::endl;
@@ -42,6 +47,10 @@ void Player::set_ships() {
             }
         }
     }
+}
+
+size_t Player::get_kills() {
+    return controller.get_kills();
 }
 
 

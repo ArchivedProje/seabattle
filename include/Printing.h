@@ -18,6 +18,7 @@ class Controller;
 class Printing {
 private:
     friend class Controller;
+
     std::ostream &stream;
     std::stringstream map;
     std::map<std::string, std::string> symbols;
@@ -25,18 +26,19 @@ private:
 
     void update_map();
 
-    void set_status(const size_t x, const size_t y, const std::string& status);
+    void set_status(const size_t x, const size_t y, const std::string &status);
 
     std::string get_status(const size_t x, const size_t y) const;
 
-    std::pair<size_t, bool> get_distance(size_t x, size_t y, const char coordinate, const std::string& direction, bool check_current = true) const;
+    std::pair<size_t, bool> get_distance(size_t x, size_t y, const char coordinate, const std::string &direction,
+                                         bool check_current = true) const;
 
 public:
     explicit Printing(std::ostream &new_stream);
 
-    bool shot(size_t x, size_t y);
+    std::pair<int, bool> shot(size_t x, size_t y, std::string &&who);
 
-    void dead(size_t x, size_t y);
+    bool dead(size_t x, size_t y, std::string &&who);
 
     void cls();
 

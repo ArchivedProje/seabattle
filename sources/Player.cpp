@@ -24,7 +24,7 @@ std::pair<std::pair<size_t, size_t>, std::pair<int, bool>> Player::make_shot() {
 }
 
 void Player::set_ships() {
-    std::cout << "Hi, now you should place your ships" << std::endl;
+    std::cout << "Hi, now you should arrange your ships" << std::endl;
     std::cout << "You can enter 'auto' or 'manual'" << std::endl;
     std::string input;
     std::cin >> input;

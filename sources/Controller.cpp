@@ -139,7 +139,7 @@ bool Controller::get_cell(size_t &x, size_t &y) {
     return true;
 }
 
-std::pair<bool, bool> Controller::make_shot(size_t x, size_t y, std::string &&who) {
+std::pair<int, bool> Controller::make_shot(size_t x, size_t y, std::string &&who) {
     return opponnent_field.shot(x, y, std::move(who));
 }
 
@@ -159,5 +159,28 @@ size_t Controller::get_kills() {
     return count_kills;
 }
 
-
-
+std::pair<std::pair<size_t, size_t>, std::string> Controller::get_random_cell_direction() {
+    std::mt19937 random(std::chrono::steady_clock::now().time_since_epoch().count());
+    std::string direction;
+    size_t d = random() % 5;
+    switch (d) {
+        case 0:
+            direction = "nothing";
+            break;
+        case 1:
+            direction = "right";
+            break;
+        case 2:
+            direction = "left";
+            break;
+        case 3:
+            direction = "up";
+            break;
+        case 4:
+            direction = "down";
+            break;
+    }
+    size_t x = random() % 10;
+    size_t y = random() % 10;
+    return {{x, y}, direction};
+}

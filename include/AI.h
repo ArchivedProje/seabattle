@@ -5,8 +5,6 @@
 #ifndef SEABATTLE_AI_H
 #define SEABATTLE_AI_H
 
-#include <random>
-#include <chrono>
 #include <iostream>
 #include <set>
 #include "Printing.h"

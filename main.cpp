@@ -12,7 +12,6 @@ void draw(Printing &player_field, Printing &computer_field) {
 }
 
 int main() {
-    std::system("color F0");
     Printing player_field(std::cout);
     Printing computer_field(std::cout);
     AI computer(computer_field, player_field);

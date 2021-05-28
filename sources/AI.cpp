@@ -9,32 +9,11 @@ AI::AI(Printing &new_own_field, Printing &new_opponnent_field) : controller(new_
 }
 
 void AI::set_ships() {
-    std::mt19937 random(std::chrono::steady_clock::now().time_since_epoch().count());
     for (size_t i = 1; i < 5; ++i) {
         size_t k = 0;
         while (k < 5 - i) {
-            std::string direction;
-            size_t d = random() % 5;
-            switch (d) {
-                case 0:
-                    direction = "nothing";
-                    break;
-                case 1:
-                    direction = "right";
-                    break;
-                case 2:
-                    direction = "left";
-                    break;
-                case 3:
-                    direction = "up";
-                    break;
-                case 4:
-                    direction = "down";
-                    break;
-            }
-            size_t x = random() % 10;
-            size_t y = random() % 10;
-            if (controller.set_ship(x, y, i, direction, "computer")) {
+            auto cell_direction = controller.get_random_cell_direction();
+            if (controller.set_ship(cell_direction.first.first, cell_direction.first.second, i, cell_direction.second, "computer")) {
                 ++k;
             }
         }

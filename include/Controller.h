@@ -6,6 +6,8 @@
 #define SEABATTLE_CONTROLLER_H
 
 #include <string>
+#include <random>
+#include <chrono>
 #include "Printing.h"
 #include "Data.h"
 
@@ -24,13 +26,15 @@ public:
 
     bool set_ship(size_t x, size_t y, size_t ship_size, std::string &direction, std::string &&which);
 
-    std::pair<bool, bool> make_shot(size_t x, size_t y, std::string &&who);
+    std::pair<int, bool> make_shot(size_t x, size_t y, std::string &&who);
 
     void show_own_field();
 
     std::string get_status(size_t x, size_t y);
 
     void increase_kills();
+
+    std::pair<std::pair<size_t, size_t>, std::string> get_random_cell_direction();
 
     size_t get_kills();
 };
